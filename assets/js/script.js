@@ -14,12 +14,12 @@ function updateTime() {
   let currentHour = moment().format('H');
   // convert currentHour into a number
   let currentHourNum = Number(currentHour);
-  // check currentHourNum against timeboxId (also corresponds to scheduling hour)
+  // check currentHourNum against timeboxId (also corresponds to scheduling hour), and render plans
   for (let index = 9; index < 18; index++) {
     let $timeBox = $('#' + index);
     let $timeBoxId = $('#' + index).attr('id');
+    $timeBox.text(localStorage.getItem(index));
     if (currentHourNum > $timeBoxId) {
-      // past hours are styled grey
       $timeBox.addClass('past');
     } else if (currentHourNum < $timeBoxId) {
       $timeBox.addClass('future');
@@ -27,7 +27,6 @@ function updateTime() {
       $timeBox.addClass('present');
     }
   }
-  renderPlans();
 }
 
 // adds event handler to save buttons to save plans to local storage
@@ -39,11 +38,5 @@ $('.input-group').on('click', 'button', function(event) {
   localStorage.setItem(planId, planText);
 
 })
-
-function renderPlans() {
-  for (let index = 9; index < 18; index++) {
-    $('#' + index).text(localStorage.getItem(index));
-  }
-}
 
 updateTime();
