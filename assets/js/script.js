@@ -1,6 +1,3 @@
-// render local date in html
-$('#currentDay').text(moment().format("[Today is] dddd, MMMM Do YYYY"));
-
 // declare global variables
 const $plannerInput9 = $('#9')
 const $plannerInput10 = $('#10')
@@ -12,20 +9,21 @@ const $plannerInput15 = $('#15')
 const $plannerInput16 = $('#16')
 const $plannerInput17 = $('#17')
 
-let schedule = [
-  $plannerInput9,
-  $plannerInput10,
-  $plannerInput11,
-  $plannerInput12,
-  $plannerInput13,
-  $plannerInput14,
-  $plannerInput15,
-  $plannerInput16,
-  $plannerInput17,
-]
-
 // change input color based on the hour 
-function updateTimeBox() {
+function updateTime() {
+  // render local date in html
+  $('#currentDay').text(moment().format("[Today is] dddd, MMMM Do YYYY, h:mm a"));
+  let schedule = [
+    $plannerInput9,
+    $plannerInput10,
+    $plannerInput11,
+    $plannerInput12,
+    $plannerInput13,
+    $plannerInput14,
+    $plannerInput15,
+    $plannerInput16,
+    $plannerInput17,
+  ]
   let currentHour = moment().format('H');
   // convert currentHour into a number
   let currentHourNum = Number(currentHour);
@@ -49,7 +47,7 @@ setInterval(function() {
   moment();
   let currentMin = moment().format('m')
   if (currentMin == 0) {
-    updateTimeBox();
+    updateTime();
   }
 }, 60000)
 
@@ -71,4 +69,4 @@ function renderPlans() {
   }
 }
 
-updateTimeBox();
+updateTime();
