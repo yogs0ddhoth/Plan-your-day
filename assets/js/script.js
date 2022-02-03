@@ -1,75 +1,74 @@
 // render local date in html
-$('#planner').text(moment().format("[Today is] dddd, MMMM Do YYYY"));
+$('#currentDay').text(moment().format("[Today is] dddd, MMMM Do YYYY"));
 
 // declare global variables
-const $plannerDiv = $('#planner');
-let now;
-let currentHour = moment().format('hA');
+const $plannerInput9 = $('#9')
+const $plannerInput10 = $('#10')
+const $plannerInput11 = $('#11')
+const $plannerInput12 = $('#12')
+const $plannerInput13 = $('#13')
+const $plannerInput14 = $('#14')
+const $plannerInput15 = $('#15')
+const $plannerInput16 = $('#16')
+const $plannerInput17 = $('#17')
 
-// function to render 9 timeblocks:
-function renderTimeBlocks() {
-  for (let hour = 9; hour <= 17; hour++) {
-    // render timeblocks
-    let $timeBlockDiv = $('<div>');
-    $timeBlockDiv.addClass('input-group ');
+let schedule = [
+  $plannerInput9,
+  $plannerInput10,
+  $plannerInput11,
+  $plannerInput12,
+  $plannerInput13,
+  $plannerInput14,
+  $plannerInput15,
+  $plannerInput16,
+  $plannerInput17,
+]
 
-    let $timeDiv = $('<div>');
-    $timeDiv.addClass('input-group-prepend col-2');
-    $timeBlockDiv.append($timeDiv);
-
-    let $timeSpan = $('<span>');
-    $timeSpan.addClass('input-group-text col-12');
-    let time;
-    let ampm;
-    if (hour > 12) {
-      time = hour - 12;
-      ampm = "pm";
+// change input color based on the hour 
+function updateTimeBox() {
+  let currentHour = moment().format('H');
+  // convert currentHour into a number
+  let currentHourNum = Number(currentHour);
+  // check currentHourNum against schedule hour h
+  for (let index = 0; index < 9; index++) {
+    let timeBox = schedule[index];
+    let timeBoxId = timeBox.attr('id');
+    if (currentHourNum > timeBoxId) {
+      timeBox.addClass('past');
+    } else if (currentHourNum < timeBoxId) {
+      timeBox.addClass('future');
     } else {
-      time = hour;
-      ampm = "am";
+      timeBox.addClass('present');
     }
-    $timeSpan.text(time + ampm);
-    $timeDiv.append($timeSpan);
-    
-    // chose either textarea or text input and add corresponding bootstrap classes
-    
-    let $eventInput = $('<textarea>');
-    $eventInput.addClass('form-control col-9');
-    $eventInput.attr('aria-label', 'With textarea' );
-    $eventInput.insertAfter($timeDiv);
-
-    // let $eventInput = $('<input>');
-    // $eventInput.attr({
-    //   type:'text',
-    // });
-    // $eventInput.addClass('form-control');
-    
-    $eventInput.insertAfter($timeDiv);
-
-    let $saveDiv = $('<div>');
-    $saveDiv.addClass('input-group-append col-1');
-    $saveDiv.insertAfter($eventInput);
-
-    let $saveBtn = $('<button>');
-    $saveBtn.addClass('btn btn-outline-secondary');
-    $saveBtn.attr('type', 'button' );
-    $saveBtn.text("save");
-    $saveDiv.append($saveBtn);
-
-    $plannerDiv.append($timeBlockDiv);
   }
-  // timeblock functionality:
-  // * color based on time - use moment
+  renderPlans();
 }
 
-renderTimeBlocks()
+// update page every minute 
+setInterval(function() {
+  moment();
+  let currentMin = moment().format('m')
+  if (currentMin == 0) {
+    updateTimeBox();
+  }
+}, 60000)
 
+// save textarea input value
+let plansArr = new Array(9);
 
+$('.input-group').on('click', 'button', function(event) {
+  let planText = $(event.target).parent().prev().val();
+  console.log(planText);
+  let planId = $(event.target).parent().prev().attr('id');
+  console.log(planId);
+  localStorage.setItem(planId, planText);
 
-/*
-  TODO:
+})
 
-  timeblock functionality:
-  * color based on time - use moment
-  * function to save input to local storage
-*/
+function renderPlans() {
+  for (let index = 9; index < 18; index++) {
+    $('#' + index).text(localStorage.getItem(index));
+  }
+}
+
+updateTimeBox();
