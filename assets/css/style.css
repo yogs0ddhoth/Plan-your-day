@@ -37,23 +37,23 @@ textarea {
 }
 
 .hour {
-  background-color: #ffffff;
+  background-color:#ffffff;
   color: #000000;
   border-top: 1px dashed #000000;
 }
 
 .past {
-  background-color: #d3d3d3;
+  background-color: #d6c7c7;
   color: white;
 }
 
 .present {
-  background-color: #ff6961;
+  background-color: #ee634a;
   color: white;
 }
 
 .future {
-  background-color: #77dd77;
+  background-color: #41eb41;
   color: white;
 }
 
